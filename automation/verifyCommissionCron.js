@@ -6,7 +6,6 @@ import { Commission } from "../models/commissionSchema.js";
 
 export const verifyCommissionCron = () => {
   cron.schedule("*/1 * * * *", async () => {
-    console.log("Running verify Commission Cron..");
     const approvedProofs = await PaymentProof.find({ status: "Approved" });
     for (const proof of approvedProofs) {
       try {
