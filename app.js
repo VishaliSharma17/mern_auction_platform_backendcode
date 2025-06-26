@@ -16,10 +16,26 @@ const app=express();
 config({
     path:"./config/.env",
 })
+// app.use(cors({
+//     origin:[process.env.FRONTEND_URL],
+//     methods:["POST","GET","PUT","DELETE"],
+//     credentials:true,
+// }));
+const allowedOrigins = [
+    "http://localhost:5173",                    // local frontend
+    "https://primebids.netlify.app",   // deployed frontend
+  ];
 app.use(cors({
-    origin:[process.env.FRONTEND_URL],
+    origin:function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
+      },
+      credentials:true,
     methods:["POST","GET","PUT","DELETE"],
-    credentials:true,
+   
 }));
 
 app.use(cookieParser());
